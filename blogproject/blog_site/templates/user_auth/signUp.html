@@ -1,0 +1,16 @@
+{% extends 'partails/base.html' %}
+{% block title %}<title>SignUp</title>{% endblock %}
+{%block content%}
+<form method="post" action="{% url 'signup' %}" name="registerform">
+  {% csrf_token %}
+  <label>Username <span>*</span> </label>
+  <input name="username" type="text" required>
+  <label>Email Address <span>*</span> </label>
+  <input name="email" type="email" required>
+  <label>Password <span>*</span> </label>
+  <input name="password1" type="password" required>
+  <label>Confirm Password <span>*</span> </label>
+  <input name="password2" type="password" required>
+  <button type="submit" class="log-submit-btn color-bg"><span>Register</span></button>
+</form>
+{% endblock %}

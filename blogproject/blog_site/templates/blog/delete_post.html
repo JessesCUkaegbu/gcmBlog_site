@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %} <title>Post</title> {% endblock %}
+
+<!-- Alert success message end ============== -->
+{% block content %}
+
+
+<div class="card-body">
+    <h5 class="card-title">Basic Modal</h5>
+    <p>Toggle a working modal demo by clicking the button below. It will slide down and fade in from the top of the page</p>
+
+    <!-- Basic Modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
+      Basic Modal
+    </button>
+    <div class="modal fade" id="basicModal" tabindex="-1" style="display: none;" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Basic Modal</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Non omnis incidunt qui sed occaecati magni asperiores est mollitia. Soluta at et reprehenderit. Placeat autem numquam et fuga numquam. Tempora in facere consequatur sit dolor ipsum. Consequatur nemo amet incidunt est facilis. Dolorem neque recusandae quo sit molestias sint dignissimos.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Basic Modal-->
+
+  </div>
+
+
+<div class="container mt-5 pt-5">
+    
+<form class="delete-post-form" action="{% url 'delete_post' %}" method="POST" data-post-id="{{ post.id }}">
+    {% csrf_token %}
+    <button type="submit" class="delete-post-btn btn btn-danger">Delete Post</button>
+</form>
+
+</div>
+
+<!-- 
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteForms = document.querySelectorAll('.delete-post-form');
+
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const postId = this.dataset.postId; // Adjust this line to get the post ID from your HTML
+            const deleteButton = this.querySelector('.delete-post-btn');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteButton.disabled = true; // Disable the delete button
+
+                    Swal.fire({
+                        title: 'Deleted!',
+                        text: 'Your file has been deleted.',
+                        icon: 'success'
+                    }).then(() => {
+                        // Optional: perform the deletion action here
+                        // For example, send a request to delete the post
+                        fetch(`/delete_post/${postId}/`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ post_id: postId })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Handle the response from the server after post deletion
+                            if (data.success) {
+                                // Optionally, perform additional actions after successful deletion
+                                console.log('Post deleted successfully!');
+                            } else {
+                                // Handle deletion failure
+                                console.error('Failed to delete post:', data.message);
+                            }
+                        })
+                        .catch(error => {
+                            // Handle deletion error
+                            console.error('Error:', error);
+                        });
+                    });
+                }
+            });
+        });
+    });
+});
+
+
+</script> -->
+
+
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %} <title> Post </title> {% endblock %}
+
+<!-- Alert success message end ============== -->
+{% block content %}
+
+<div class="container post-form-body mt-5 pt-4">
+  <div class="card-body">
+    <h5 class="card-title text-center mt-4 mb-4 pb-4 mt-5"
+      style="font-weight: bold; text-transform: uppercase; font-size: larger;">Post Blog</h5>
+
+    <!-- General Form Elements -->
+    <form class="post-form" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <div class="row mb-3 pb-3">
+          <label for="inputText" class="col-sm-2 col-form-label">Title</label>
+          <div class="col-sm-10 post-form-input">
+            <input type="text" name="title" class="form-control">
+          </div>
+        </div>
+        <div class="row mb-3 pb-3">
+          <label for="inputText" class="col-sm-2 col-form-label">Author Name</label>
+          <div class="col-sm-10 post-form-input">
+            <input type="text" name="authorName" class="form-control">
+          </div>
+        </div>
+        <div class="row mb-3 pb-3">
+          <label for="inputNumber" class="col-sm-2 col-form-label">Upload Image</label>
+          <div class="col-sm-10">
+            <input class="form-control" name="image" type="file" id="formFile">
+          </div>
+        </div>
+        <div class="row mb-3 pb-3">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Blog Content</label>
+          <div class="col-sm-10 post-form-input">
+            <textarea class="form-control" name="content" style="height: 100px"></textarea>
+          </div>
+        </div>
+        <div class="row mb-3 pb-3">
+          <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+          <div class="col-sm-10 d-flex justify-content-between">
+            <button type="submit" class="btn btn-outline-primary btn-lg">Save</button>
+           
+
+            <div class="btn-group">
+             <button type="submit" class="btn btn-outline-secondary btn-lg">Save</button>
+              <button type="button" class="btn btn-outline-danger btn-lg delete-post">Delete</button>
+            </div>
+          </div>
+        </div>
+       </div>  
+    </form><!-- End General Form Elements -->
+  </div>
+</div>
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteForms = document.querySelectorAll('delete-post');
+
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const postId = this.dataset.postId; // Adjust this line to get the post ID from your HTML
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/delete_post/${postId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ post_id: postId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'Your post has been deleted.',
+                                icon: 'success'
+                            }).then(() => {
+                                // Optional: reload the page after successful deletion
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: data.message,
+                                icon: 'error'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong.',
+                            icon: 'error'
+                        });
+                    });
+                }
+            });
+        });
+    });
+});
+
+</script>
+
+
+{% endblock %}

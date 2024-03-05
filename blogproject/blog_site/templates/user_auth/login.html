@@ -1,0 +1,34 @@
+{%  extends 'partials/base.html' %}
+{% block title %}<title>Login</title>{% endblock %}
+{% block content %}
+<div class="main-register-container">
+  <!-- Your existing HTML code for the modal form -->
+  <div class="tab">
+      <!-- Login form -->
+      <div id="tab-1" class="tab-content first-tab">
+          <div class="custom-form">
+              <form method="post" action="{% url 'login' %}" name="loginform">
+                  {% csrf_token %}
+                  <label>Username or Email Address <span>*</span> </label>
+                  <input name="username" type="text" onClick="this.select()" value="">
+                  <label>Password <span>*</span> </label>
+                  <input name="password" type="password" onClick="this.select()" value="">
+                  <div class="filter-tags">
+                      <input id="check-a" type="checkbox" name="check" checked>
+                      <label for="check-a">Remember me</label>
+                  </div>
+                  <div class="lost_password">
+                      <a href="#">Lost Your Password?</a>
+                  </div>
+                  <div class="clearfix"></div>
+                  <button type="submit" class="log-submit-btn color-bg"><span>Log In</span></button>
+              </form>
+          </div>
+      </div>
+      <!-- Registration form -->
+      <!-- Your existing registration form remains unchanged -->
+  </div>
+  <!-- Your existing HTML code for the modal continues... -->
+</div>
+
+{% endblock %}
